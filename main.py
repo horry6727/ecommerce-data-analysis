@@ -17,12 +17,17 @@ print(f"      采集完成，共 {len(raw_data)} 条原始数据")
 
 # ================= 第2步：数据清洗 =================
 print("\n[2/5] 正在执行数据清洗...")
-import clean
-# clean.py 是脚本式模块，import 后自动执行清洗逻辑
-# 清洗后的数据在 clean.df 中
-# 将清洗后的数据保存为 CSV，供后续的 mysql.py 读取
-os.makedirs('data/cleaned', exist_ok=True)
-clean.df.to_csv("data/cleaned/dataproducts_cleaned.csv", index=False, encoding="utf-8-sig")
+from clean import clean_data
+
+df = clean_data("data/raw/dataproducts.csv")
+
+os.makedirs("data/cleaned", exist_ok=True)
+
+df.to_csv(
+    "data/cleaned/dataproducts_cleaned.csv",
+    index=False,
+    encoding="utf-8-sig"
+)
 print("      清洗完成，已保存至 data/cleaned/dataproducts_cleaned.csv")
 
 # ================= 第3步：写入数据库 =================
@@ -42,4 +47,4 @@ import analysis.visualize_seaborn
 
 print("\n" + "=" * 50)
 print("主流程执行完毕！")
-print("=" * 50)
+print("=" * 50) 
